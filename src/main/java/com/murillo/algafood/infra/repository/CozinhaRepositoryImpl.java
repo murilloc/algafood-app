@@ -2,6 +2,7 @@ package com.murillo.algafood.infra.repository;
 
 import com.murillo.algafood.domain.model.Cozinha;
 import com.murillo.algafood.domain.repository.CozinhaRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
@@ -42,9 +43,13 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
 
     @Override
     @Transactional
-    public void remover(Cozinha cozinha) {
+    public void remover(Long id) {
 
-        cozinha = buscar(cozinha.getId());
+       Cozinha cozinha = buscar(id);
+
+       if(cozinha == null){
+           throw new EmptyResultDataAccessException(1);
+       }
         entityManager.remove(cozinha);
     }
 
