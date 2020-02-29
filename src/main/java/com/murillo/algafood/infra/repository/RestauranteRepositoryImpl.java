@@ -2,14 +2,15 @@ package com.murillo.algafood.infra.repository;
 
 import com.murillo.algafood.domain.model.Restaurante;
 import com.murillo.algafood.domain.repository.RestauranteRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.List;
 
-@Component
+@Repository
 public class RestauranteRepositoryImpl implements RestauranteRepository {
 
     @PersistenceContext
@@ -25,19 +26,19 @@ public class RestauranteRepositoryImpl implements RestauranteRepository {
 
     @Override
     public Restaurante buscar(Long id) {
-        entityManager.find(Restaurante.class, id);
-        return null;
+        return entityManager.find(Restaurante.class, id);
     }
 
+    @Transactional
     @Override
     public Restaurante salvar(Restaurante restaurante) {
+
         return entityManager.merge(restaurante);
     }
 
     @Override
     public void remover(Long id) {
-        Restaurante  restaurante = buscar(id);
+        Restaurante restaurante = buscar(id);
         entityManager.remove(restaurante);
-
     }
 }

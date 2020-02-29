@@ -2,39 +2,46 @@ package com.murillo.algafood.infra.repository;
 
 import com.murillo.algafood.domain.model.Cidade;
 import com.murillo.algafood.domain.repository.CidadeRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.List;
 
-@Component
+@Repository
 public class CidadeRepositoryImpl implements CidadeRepository {
 
     @PersistenceContext
-    private EntityManager entityManager;
+    private EntityManager manager;
 
     @Override
     public List<Cidade> listar() {
-        TypedQuery<Cidade> query = entityManager.createQuery("select c from Cidade c", Cidade.class);
-        return query.getResultList();
+        return manager.createQuery("select c from Cidade c", Cidade.class)
+                .getResultList();
     }
 
     @Override
     public Cidade buscar(Long id) {
-        return entityManager.find(Cidade.class, id);
+        return manager.find(Cidade.class, id);
     }
 
+    @Transactional
     @Override
     public Cidade salvar(Cidade cidade) {
-        return entityManager.merge(cidade);
+        return manager.merge(cidade);
     }
 
+    @Transactional
     @Override
-    public void remover(Cidade cidade) {
-        cidade = buscar(cidade.getId());
-        entityManager.remove(cidade);
+    public void remover(Long id) {
+        Cidade cidade = buscar(id);
 
+        if (cidade == null) {
+            throw new EmptyResultDataAccessException(1);
+        }
+
+        manager.remove(cidade);
     }
 }

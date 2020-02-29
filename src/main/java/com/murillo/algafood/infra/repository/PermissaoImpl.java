@@ -2,12 +2,14 @@ package com.murillo.algafood.infra.repository;
 
 import com.murillo.algafood.domain.model.Permissao;
 import com.murillo.algafood.domain.repository.PermissaoRepository;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
+@Repository
 public class PermissaoImpl implements PermissaoRepository {
 
     @PersistenceContext
@@ -33,6 +35,5 @@ public class PermissaoImpl implements PermissaoRepository {
     public void remover(Permissao permissao) {
         permissao = buscar(permissao.getId());
         entityManager.merge(permissao);
-
     }
 }

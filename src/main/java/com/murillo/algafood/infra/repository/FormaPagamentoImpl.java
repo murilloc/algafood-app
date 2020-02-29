@@ -2,12 +2,14 @@ package com.murillo.algafood.infra.repository;
 
 import com.murillo.algafood.domain.model.FormaPagamento;
 import com.murillo.algafood.domain.repository.FormaPagamentoRepository;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
+@Repository
 public class FormaPagamentoImpl implements FormaPagamentoRepository {
 
     @PersistenceContext
@@ -22,11 +24,13 @@ public class FormaPagamentoImpl implements FormaPagamentoRepository {
 
     @Override
     public FormaPagamento buscar(Long id) {
+
         return entityManager.find(FormaPagamento.class, id);
     }
 
     @Override
     public FormaPagamento salvar(FormaPagamento formaPagamento) {
+
         return entityManager.merge(formaPagamento);
     }
 
@@ -34,6 +38,5 @@ public class FormaPagamentoImpl implements FormaPagamentoRepository {
     public void remover(FormaPagamento formaPagamento) {
         formaPagamento = buscar(formaPagamento.getId());
         entityManager.remove(formaPagamento);
-
     }
 }

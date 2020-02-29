@@ -1,10 +1,10 @@
 package com.murillo.algafood.domain.exception;
 
-public class EntidadeNapEncontradaException extends RuntimeException {
+public class EntidadeNaoEncontradaException extends RuntimeException {
 
     private static final Long serialVersionUID = 1L;
 
-    public EntidadeNapEncontradaException(String message) {
+    public EntidadeNaoEncontradaException(String message) {
         super(message);
     }
 }

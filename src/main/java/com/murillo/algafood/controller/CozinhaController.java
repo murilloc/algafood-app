@@ -1,7 +1,7 @@
 package com.murillo.algafood.controller;
 
 import com.murillo.algafood.domain.exception.EntidadeEmUsoException;
-import com.murillo.algafood.domain.exception.EntidadeNapEncontradaException;
+import com.murillo.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.murillo.algafood.domain.model.Cozinha;
 import com.murillo.algafood.domain.repository.CozinhaRepository;
 import com.murillo.algafood.domain.service.CadastroCozinhaService;
@@ -23,39 +23,25 @@ public class CozinhaController {
     @Autowired
     private CadastroCozinhaService cadastroCozinha;
 
-    @GetMapping()
-    private List<Cozinha> listar() {
-        return cozinhaRepository.listar();
+
+    @GetMapping
+    public ResponseEntity<?> listar() {
+
+        List<Cozinha> cozinhas = cozinhaRepository.listar();
+        return ResponseEntity.status(HttpStatus.OK).body(cozinhas);
     }
 
-
-    //@ResponseStatus(HttpStatus.CREATED)  Forma de indicar o status da resposta por aotação
     @GetMapping("/{cozinhaId}")
-    private ResponseEntity<Cozinha> buscar(@PathVariable Long cozinhaId) {
-
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add(HttpHeaders.LOCATION, "http://api.algafood.local:8080/cozinhas/1");
-//        return ResponseEntity.status(HttpStatus.FOUND)
-//                .headers(headers).build();
+    public ResponseEntity<Cozinha> buscar(@PathVariable Long cozinhaId) {
 
         Cozinha cozinha = cozinhaRepository.buscar(cozinhaId);
-//      return ResponseEntity.status(HttpStatus.OK).body(cozinha);
-//        return ResponseEntity.ok(cozinha); // simplificação da linha acima
 
         if (cozinha != null) {
             return ResponseEntity.ok(cozinha);
         }
 
-        //return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         return ResponseEntity.notFound().build();
-
     }
-
-// O recurso também pode ser mapeado desta forma
-//    @GetMapping("/{cozinhaId}")
-//    private Cozinha buscar(@PathVariable("cozinhaId") Long id){
-//        return cozinhaRepository.buscar(id);
-//    }
 
 
     @PostMapping
@@ -81,15 +67,16 @@ public class CozinhaController {
     }
 
     @DeleteMapping(value = "/{cozinhaId}")
-    public ResponseEntity<Void> deletar(@PathVariable Long cozinhaId) {
+    public ResponseEntity<Void> excluir(@PathVariable Long cozinhaId) {
         try {
+
             cadastroCozinha.excluir(cozinhaId);
             return ResponseEntity.noContent().build();
+        } catch (EntidadeNaoEncontradaException e) {
 
-        } catch (EntidadeNapEncontradaException e) {
             return ResponseEntity.notFound().build();
-
         } catch (EntidadeEmUsoException e) {
+
             // Http Status 400 poderia ser aplicado mas é muito abrangent.e CONFLICT(409) é mais específico
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
