@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/estados")
 public class EstadoController {
@@ -22,24 +24,23 @@ public class EstadoController {
 
     @GetMapping()
     public ResponseEntity<?> listar() {
-        return ResponseEntity.status(HttpStatus.OK).body(estadoRepository.listar());
+        return ResponseEntity.status(HttpStatus.OK).body(estadoRepository.findAll());
     }
 
     @GetMapping("/{estadoId}")
     public ResponseEntity<?> buscar(@PathVariable Long estadoId) {
 
         try {
-            Estado estado = estadoRepository.buscar(estadoId);
+            Optional<Estado> estado = estadoRepository.findById(estadoId);
             return ResponseEntity.ok(estado);
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
 
-
     }
 
     @PostMapping
-    public ResponseEntity<?> salvar(@RequestBody Estado estado){
+    public ResponseEntity<?> salvar(@RequestBody Estado estado) {
         Estado novoEstado = cadastroEstado.salvar(estado);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoEstado);
     }
@@ -47,15 +48,15 @@ public class EstadoController {
     @PutMapping("/{estadoId}")
     public ResponseEntity<?> autalizar(@RequestBody Estado estado, @PathVariable Long estadoId) {
 
-        try {
-            Estado estadoCadastrado = estadoRepository.buscar(estadoId);
+        Estado estadoCadastrado = estadoRepository.findById(estadoId).orElse(null);
+
+        if (estadoCadastrado != null) {
             BeanUtils.copyProperties(estado, estadoCadastrado, "id");
             estadoCadastrado = cadastroEstado.salvar(estadoCadastrado);
             return ResponseEntity.ok(estadoCadastrado);
-
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+
+        return ResponseEntity.notFound().build();
 
     }
 

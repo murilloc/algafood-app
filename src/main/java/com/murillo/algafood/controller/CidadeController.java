@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/cidades")
@@ -29,7 +30,7 @@ public class CidadeController {
 
     @GetMapping
     public ResponseEntity<?> listar() {
-        List<Cidade> cidades = cidadeRepository.listar();
+        List<Cidade> cidades = cidadeRepository.findAll();
         return ResponseEntity.status(HttpStatus.OK).body(cidades);
     }
 
@@ -38,8 +39,8 @@ public class CidadeController {
     public ResponseEntity<?> buscar(@PathVariable("cidadeId") Long cidadeId) {
 
         try {
-            Cidade cidade = cidadeRepository.buscar(cidadeId);
-            return ResponseEntity.status(HttpStatus.OK).body(cidade);
+            Optional<Cidade> cidade = cidadeRepository.findById(cidadeId);
+            return ResponseEntity.status(HttpStatus.OK).body(cidade.get());
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
@@ -48,13 +49,13 @@ public class CidadeController {
     @PutMapping("/{cidadeId}")
     public ResponseEntity<?> atualizar(@RequestBody Cidade cidade, @PathVariable("cidadeId") Long cidadeId) {
         try {
-            Cidade cidadeAtual = cidadeRepository.buscar(cidadeId);
+            Optional<Cidade> cidadeAtual = cidadeRepository.findById(cidadeId);
 
-            if (cidadeAtual != null) {
-                BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+            if (cidadeAtual.isPresent()) {
+                BeanUtils.copyProperties(cidade, cidadeAtual.get(), "id");
 
-                cidadeAtual = cadastroCidade.salvar(cidadeAtual);
-                return ResponseEntity.ok(cidadeAtual);
+                Cidade cidadeAtualizada = cadastroCidade.salvar(cidadeAtual.get());
+                return ResponseEntity.ok(cidadeAtualizada);
             }
 
             return ResponseEntity.notFound().build();
@@ -69,7 +70,7 @@ public class CidadeController {
     public ResponseEntity<?> salvar(@RequestBody Cidade cidade) {
 
         try {
-            Cidade novaCidade = cidadeRepository.salvar(cidade);
+            Cidade novaCidade = cidadeRepository.save(cidade);
             return ResponseEntity.status(HttpStatus.CREATED).body(novaCidade);
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -82,7 +83,7 @@ public class CidadeController {
     public ResponseEntity<?> remover(@PathVariable("cidadeId") Long cidadeId) {
 
         try {
-            cidadeRepository.remover(cidadeId);
+            cidadeRepository.deleteById(cidadeId);
             return ResponseEntity.noContent().build();
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

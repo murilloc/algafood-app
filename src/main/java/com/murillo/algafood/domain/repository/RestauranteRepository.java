@@ -1,17 +1,26 @@
 package com.murillo.algafood.domain.repository;
 
 import com.murillo.algafood.domain.model.Restaurante;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
-public interface RestauranteRepository {
+@Repository
+public interface RestauranteRepository extends JpaRepository<Restaurante, Long> {
 
-    List<Restaurante> listar();
+    List<Restaurante> findByTaxaFreteIsBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);
 
-    Restaurante buscar(Long id);
+    List<Restaurante> streamByNomeContainingAndCozinhaId(String nome, Long cozinha);
 
-    Restaurante salvar(Restaurante restaurante);
+    Optional<Restaurante> findFirstByNomeContaining(String nome);
 
-    void remover(Long id);
+    List<Restaurante> findTop2ByNomeContainingOrderByNome(String nome);
+
+    Long countByCozinhaId(Long cozinhaId);
+
+
 
 }

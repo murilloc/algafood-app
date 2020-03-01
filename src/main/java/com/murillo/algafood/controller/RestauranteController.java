@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -28,15 +29,15 @@ public class RestauranteController {
 
     @GetMapping()
     public List<Restaurante> listar() {
-        return restauranteRepository.listar();
+        return restauranteRepository.findAll();
     }
 
     @GetMapping(value = "/{restauranteId}")
     public ResponseEntity<Restaurante> buscar(@PathVariable("restauranteId") Long id) {
-        Restaurante restaurante = restauranteRepository.buscar(id);
+        Optional<Restaurante> restaurante = restauranteRepository.findById(id);
 
-        if (restaurante != null) {
-            return ResponseEntity.ok().body(restaurante);
+        if (restaurante.isPresent()) {
+            return ResponseEntity.ok().body(restaurante.get());
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -61,14 +62,13 @@ public class RestauranteController {
     @PatchMapping("/{restauranteId}")
     public ResponseEntity<?> atualizarParcialmente(@RequestBody Map<String, Object> campos, @PathVariable Long restauranteId) {
 
-        Restaurante restauranteCadastrado = restauranteRepository.buscar(restauranteId);
-
-        if (restauranteCadastrado == null) {
+        Optional<Restaurante> restauranteCadastrado = restauranteRepository.findById(restauranteId);
+        if (restauranteCadastrado.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        merge(campos, restauranteCadastrado);
+        merge(campos, restauranteCadastrado.get());
 
-        return atualizar(restauranteCadastrado, restauranteId);
+        return atualizar(restauranteCadastrado.get(), restauranteId);
     }
 
     private void merge(@RequestBody Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
@@ -84,7 +84,7 @@ public class RestauranteController {
         });
     }
 
-   @PutMapping("/{restauranteId}")
+    @PutMapping("/{restauranteId}")
     public ResponseEntity<?> atualizar(@RequestBody Restaurante restaurante, @PathVariable("restauranteId") Long id) {
         try {
 
