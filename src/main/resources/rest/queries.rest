@@ -1,0 +1,3 @@
+http://api.algafood.local:8080/test/restaurantes/por-nome-criteria?taxaInicial=3
+
+###
