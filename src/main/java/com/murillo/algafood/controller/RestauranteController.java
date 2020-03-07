@@ -5,6 +5,7 @@ import com.murillo.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.murillo.algafood.domain.model.Restaurante;
 import com.murillo.algafood.domain.repository.RestauranteRepository;
 import com.murillo.algafood.domain.service.CadastroRestauranteService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -86,16 +87,15 @@ public class RestauranteController {
 
     @PutMapping("/{restauranteId}")
     public ResponseEntity<?> atualizar(@RequestBody Restaurante restaurante, @PathVariable("restauranteId") Long id) {
-        try {
 
+        try {
             if (restaurante.getCozinha() == null || restaurante.getTaxaFrete() == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro na composição dos dados");
             }
             Restaurante restauranteExistente = cadastroRestaurante.buscar(id);
-            restauranteExistente.setNome(restaurante.getNome());
-            restauranteExistente.setTaxaFrete(restaurante.getTaxaFrete());
-            restauranteExistente.setCozinha(restaurante.getCozinha());
-            restauranteExistente = cadastroRestaurante.atualizar(restauranteExistente);
+
+            BeanUtils.copyProperties(restaurante, restauranteExistente, "id", "formasPagamento", "endereco", "dataCadastro");
+            restauranteExistente = cadastroRestaurante.salvar(restauranteExistente);
             return ResponseEntity.status(HttpStatus.OK).body(restauranteExistente);
 
         } catch (EntidadeNaoEncontradaException e) {
