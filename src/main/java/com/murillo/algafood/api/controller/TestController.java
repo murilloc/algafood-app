@@ -1,4 +1,4 @@
-package com.murillo.algafood.controller;
+package com.murillo.algafood.api.controller;
 
 import com.murillo.algafood.domain.model.Cozinha;
 import com.murillo.algafood.domain.model.Restaurante;

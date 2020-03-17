@@ -11,9 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface RestauranteRepository extends CustomJpaRepository<Restaurante, Long> , CustomRestauranteRepository, JpaSpecificationExecutor<Restaurante> {
+public interface RestauranteRepository
+        extends CustomJpaRepository<Restaurante, Long> , CustomRestauranteRepository, JpaSpecificationExecutor<Restaurante> {
 
-    @Query("from Restaurante r join fetch r.cozinha left join fetch r.formasPagamento")
+    @Query("from Restaurante r join fetch r.cozinha")
     List<Restaurante> findAll();
 
     List<Restaurante> findByTaxaFreteIsBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);
