@@ -1,6 +1,6 @@
 package com.murillo.algafood.domain.service;
 
-import com.murillo.algafood.domain.exception.EstadoEmUsoException;
+import com.murillo.algafood.domain.exception.EntidadeEmUsoException;
 import com.murillo.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.murillo.algafood.domain.model.Estado;
 import com.murillo.algafood.domain.repository.EstadoRepository;
@@ -27,7 +27,7 @@ public class CadastroEstadoService {
         } catch (EmptyResultDataAccessException e) {
             throw new EstadoNaoEncontradoException(estadoId);
         } catch (DataIntegrityViolationException e) {
-            throw new EstadoEmUsoException(estadoId);
+            throw new EntidadeEmUsoException(String.format(MSG_ESTADO_EM_USO,estadoId));
         }
     }
 
