@@ -21,14 +21,14 @@ public class Problem {
 
     private String userMessage;
     private LocalDateTime timestamp;
-    private List<Field> fields = new ArrayList<>();
+    private List<Object> objects = new ArrayList<>();
 
 
 
     @Getter
     @Setter
     @Builder
-    public static class Field{
+    public static class Object {
         private String name;
         private String userMessage;
     }

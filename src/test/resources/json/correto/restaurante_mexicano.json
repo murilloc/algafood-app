@@ -1,0 +1,7 @@
+{
+  "nome": "La Salsa Restaurante Mexicano",
+  "taxaFrete": 23.40,
+  "cozinha": {
+    "id": 3
+  }
+}
