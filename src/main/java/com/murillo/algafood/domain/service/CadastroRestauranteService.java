@@ -12,6 +12,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class CadastroRestauranteService {
 
@@ -29,6 +31,7 @@ public class CadastroRestauranteService {
     @Autowired
     CadastroCozinhaService cadastroCozinha;
 
+    @Transactional
     public Restaurante salvar(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
         Cozinha cozinha = cadastroCozinha.buscarOuFalhar(cozinhaId);
@@ -44,6 +47,9 @@ public class CadastroRestauranteService {
                 .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
     }
 
+
+
+    @Transactional
     public void excluir(Long restauranteId) {
         try {
             cozinhaRepository.deleteById(restauranteId);

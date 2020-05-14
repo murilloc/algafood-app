@@ -6,7 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,16 +26,16 @@ public class Pedido {
 
     @CreationTimestamp
     @Column(nullable = false)
-    private LocalDateTime dataCriacao;
+    private OffsetDateTime dataCriacao;
 
     @UpdateTimestamp
-    private LocalDateTime dataAtualizacao;
+    private OffsetDateTime dataAtualizacao;
 
-    private LocalDateTime dataConfirmacao;
+    private OffsetDateTime dataConfirmacao;
 
-    private LocalDateTime dataCancelamento;
+    private OffsetDateTime dataCancelamento;
 
-    private LocalDateTime dataEntrega;
+    private OffsetDateTime dataEntrega;
 
     @Column(nullable = false)
     private BigDecimal taxaFrete;

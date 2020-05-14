@@ -1,6 +1,5 @@
 package com.murillo.algafood.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.murillo.algafood.core.validation.Groups;
 import com.murillo.algafood.core.validation.ValorZeroIncluiDescricao;
 import lombok.Data;
@@ -16,11 +15,11 @@ import javax.validation.constraints.PositiveOrZero;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@ValorZeroIncluiDescricao(valorField="taxaFrete", descricaoField = "nome", descricaoObrigatoria =  "Frete Grátis")
+@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
 @Entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -38,13 +37,10 @@ public class Restaurante {
 
     @NotNull
     @PositiveOrZero
-    //@TaxaFrete
-    //@Multiplo(numero = 5)
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
 
-    //@JsonIgnoreProperties({"hibernateLazyInitializer"})
     @NotNull//(groups = Groups.CadastroRestaurante.class)
     @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
     @Valid // validação em cascata
@@ -52,25 +48,20 @@ public class Restaurante {
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
-    @JsonIgnore
     @Embedded
     private Endereco endereco;
 
-    @JsonIgnore
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
-    private LocalDateTime dataCadastro;
+    private OffsetDateTime dataCadastro;
 
-    @JsonIgnore
     @UpdateTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
-    private LocalDateTime dataAtualizacao;
+    private OffsetDateTime dataAtualizacao;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos;
 
-    @JsonIgnore
     @ManyToMany //(fetch = FetchType.EAGER) // Raramente é necessário pois é muito oneroso para o desempenho
     @JoinTable(name = "restaurante_forma_pagamento",
             joinColumns = @JoinColumn(name = "restaurante_id"),
