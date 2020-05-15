@@ -5,6 +5,7 @@ import com.murillo.algafood.domain.model.Restaurante;
 
 import java.util.List;
 
+@Deprecated
 public abstract class CozinhaMixin {
 
     @JsonIgnore
