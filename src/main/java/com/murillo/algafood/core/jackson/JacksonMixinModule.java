@@ -7,6 +7,7 @@ import com.murillo.algafood.domain.model.Cidade;
 import com.murillo.algafood.domain.model.Cozinha;
 import org.springframework.stereotype.Component;
 
+@Deprecated
 @Component
 public class JacksonMixinModule extends SimpleModule {
     private static final long serialVersionUID = 6118235691651317262L;

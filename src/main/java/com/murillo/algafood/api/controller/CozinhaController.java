@@ -58,7 +58,8 @@ public class CozinhaController {
 
 
     @PutMapping(value = "/{cozinhaId}")
-    public CozinhaOutputModel atualizar(@PathVariable Long cozinhaId, @Valid @RequestBody CozinhaInputModel cozinhaInput) {
+    public CozinhaOutputModel atualizar(@PathVariable Long cozinhaId,
+                                        @Valid @RequestBody CozinhaInputModel cozinhaInput) {
 
         Cozinha cozinhaAtual = cadastroCozinha.buscarOuFalhar(cozinhaId);
         cozinhaInputModelDisassembler.copyToDomainObject(cozinhaInput, cozinhaAtual);

@@ -1,7 +1,5 @@
 package com.murillo.algafood.domain.exception;
 
-
-
 public class CidadeNaoEncontradoException extends EntidadeNaoEncontradaException {
 
     private static final Long serialVersionUID = 1L;

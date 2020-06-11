@@ -48,6 +48,22 @@ public class CadastroRestauranteService {
     }
 
 
+    @Transactional
+    public void ativar(Long restauranteId){
+
+        Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+        restauranteAtual.ativar();
+        // Contexto JPA gerenciado não preciso fazer o update na table
+    }
+
+    @Transactional
+    public void inativar(Long restauranteId){
+
+        Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+        restauranteAtual.inativar();
+    }
+
+
 
     @Transactional
     public void excluir(Long restauranteId) {
