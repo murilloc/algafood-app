@@ -8,6 +8,7 @@ import com.murillo.algafood.api.model.input.CozinhaIdInputModel;
 import com.murillo.algafood.api.model.input.RestauranteInput;
 import com.murillo.algafood.api.model.output.RestauranteOutputModel;
 import com.murillo.algafood.core.validation.ValidacaoException;
+import com.murillo.algafood.domain.exception.CidadeNaoEncontradoException;
 import com.murillo.algafood.domain.exception.CozinhaNaoEncontradoException;
 import com.murillo.algafood.domain.exception.NegocioException;
 import com.murillo.algafood.domain.model.Restaurante;
@@ -67,7 +68,7 @@ public class RestauranteController {
 
         try {
             return restauranteAssembler.toOutputModel(cadastroRestaurante.salvar(restauranteDisassembler.fromInputModel(restauranteInput)));
-        } catch (CozinhaNaoEncontradoException e) {
+        } catch (CozinhaNaoEncontradoException | CidadeNaoEncontradoException e) {
             throw new NegocioException(e.getMessage());
         }
     }
@@ -138,7 +139,7 @@ public class RestauranteController {
 //            BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro");
 
             return restauranteAssembler.toOutputModel(cadastroRestaurante.salvar(restauranteAtual));
-        } catch (CozinhaNaoEncontradoException e) {
+        } catch (CozinhaNaoEncontradoException | CidadeNaoEncontradoException e) {
             throw new NegocioException(e.getMessage());
         }
     }
@@ -154,7 +155,7 @@ public class RestauranteController {
     @DeleteMapping("/{restauranteId}/ativo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void inativar(@PathVariable Long restauranteId) {
-        
+
         cadastroRestaurante.inativar(restauranteId);
     }
 

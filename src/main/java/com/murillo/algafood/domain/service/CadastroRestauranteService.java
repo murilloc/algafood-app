@@ -3,6 +3,7 @@ package com.murillo.algafood.domain.service;
 
 import com.murillo.algafood.domain.exception.EntidadeEmUsoException;
 import com.murillo.algafood.domain.exception.RestauranteNaoEncontradoException;
+import com.murillo.algafood.domain.model.Cidade;
 import com.murillo.algafood.domain.model.Cozinha;
 import com.murillo.algafood.domain.model.Restaurante;
 import com.murillo.algafood.domain.repository.CozinhaRepository;
@@ -31,11 +32,18 @@ public class CadastroRestauranteService {
     @Autowired
     CadastroCozinhaService cadastroCozinha;
 
+    @Autowired
+    CadastroCidadeService cadastroCidade;
+
     @Transactional
     public Restaurante salvar(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
         Cozinha cozinha = cadastroCozinha.buscarOuFalhar(cozinhaId);
         restaurante.setCozinha(cozinha);
+
+        Long cidadeId = restaurante.getEndereco().getCidade().getId();
+        Cidade cidade = cadastroCidade.buscarOuFalhar(cidadeId);
+        restaurante.getEndereco().setCidade(cidade);
 
         return restauranteRepository.save(restaurante);
     }
@@ -49,7 +57,7 @@ public class CadastroRestauranteService {
 
 
     @Transactional
-    public void ativar(Long restauranteId){
+    public void ativar(Long restauranteId) {
 
         Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
         restauranteAtual.ativar();
@@ -57,12 +65,11 @@ public class CadastroRestauranteService {
     }
 
     @Transactional
-    public void inativar(Long restauranteId){
+    public void inativar(Long restauranteId) {
 
         Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
         restauranteAtual.inativar();
     }
-
 
 
     @Transactional
@@ -75,7 +82,6 @@ public class CadastroRestauranteService {
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format(MSG_RESTAURANTE_EM_USO, restauranteId));
         }
-
 
     }
 
