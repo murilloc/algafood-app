@@ -31,9 +31,12 @@ public class CidadeController {
     @Autowired
     private CidadeInputModelDisassembler cidadeInputModelDisassembler;
 
+
     @GetMapping
-    public List<Cidade> listar() {
-        return cidadeRepository.findAll();
+    public List<CidadeOutputModel> listar() {
+
+        List<Cidade> cidades = cidadeRepository.findAll();
+        return cidadeInputModelAssembler.toOutputModelCollection(cidades);
     }
 
     @GetMapping("/{cidadeId}")

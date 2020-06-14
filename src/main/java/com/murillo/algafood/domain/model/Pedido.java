@@ -1,6 +1,7 @@
 package com.murillo.algafood.domain.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,8 +13,10 @@ import java.util.List;
 
 @Entity
 @Data
-public class Pedido {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 
+public class Pedido {
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

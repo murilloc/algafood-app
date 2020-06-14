@@ -28,4 +28,9 @@ public class CustomJpaRepositoryImpl<T,ID> extends SimpleJpaRepository<T,ID> imp
     public Optional<T> findLast() {
         return Optional.empty();
     }
+
+    @Override
+    public void detach(T entity) {
+        entityManager.detach(entity);
+    }
 }
