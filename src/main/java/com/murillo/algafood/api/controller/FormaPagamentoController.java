@@ -6,7 +6,7 @@ import com.murillo.algafood.api.model.input.FormaPagamentoInputModel;
 import com.murillo.algafood.api.model.output.FormaPagamentoOutputModel;
 import com.murillo.algafood.domain.model.FormaPagamento;
 import com.murillo.algafood.domain.repository.FormaPagamentoRepository;
-import com.murillo.algafood.domain.service.CadastroFormaPagamento;
+import com.murillo.algafood.domain.service.CadastroFormaPagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ import java.util.List;
 public class FormaPagamentoController {
 
     @Autowired
-    private CadastroFormaPagamento cadastroFormaPagamento;
+    private CadastroFormaPagamentoService cadastroFormaPagamento;
     @Autowired
     private FormaPagamentoRepository formaPagamentoRepository;
 
