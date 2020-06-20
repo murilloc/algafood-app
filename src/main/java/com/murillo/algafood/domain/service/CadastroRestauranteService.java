@@ -106,4 +106,5 @@ public class CadastroRestauranteService {
         restaurante.adicionarFormaPagamento(formaPagamento);
 
     }
+
 }
