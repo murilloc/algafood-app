@@ -3,11 +3,15 @@ package com.murillo.algafood.api.controller;
 
 import com.murillo.algafood.api.assembler.GrupoInputModelAssembler;
 import com.murillo.algafood.api.assembler.GrupoInputModelDisassembler;
+import com.murillo.algafood.api.assembler.PermissaoInputModelAssembler;
 import com.murillo.algafood.api.model.input.GrupoInputModel;
 import com.murillo.algafood.api.model.output.GrupoOutputModel;
+import com.murillo.algafood.api.model.output.PermissaoOutputModel;
 import com.murillo.algafood.domain.model.Grupo;
+import com.murillo.algafood.domain.model.Permissao;
 import com.murillo.algafood.domain.repository.GrupoRepository;
 import com.murillo.algafood.domain.service.CadastroGrupoService;
+import com.murillo.algafood.domain.service.CadastroPermissaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +34,12 @@ public class GrupoController {
 
     @Autowired
     private GrupoInputModelAssembler grupoInputModelAssembler;
+
+    @Autowired
+    private PermissaoInputModelAssembler permissaoInputModelAssembler;
+
+    @Autowired
+    private CadastroPermissaoService cadastroPermissao;
 
 
     @GetMapping("/{grupoId}")
@@ -70,8 +80,11 @@ public class GrupoController {
     @DeleteMapping("/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void apagar(@PathVariable Long grupoId) {
+
         cadastroGrupo.excluir(grupoId);
     }
+
+
 
 
 }

@@ -5,6 +5,7 @@ import com.murillo.algafood.domain.exception.EntidadeEmUsoException;
 import com.murillo.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.murillo.algafood.domain.exception.GrupoNaoEncontradoException;
 import com.murillo.algafood.domain.model.Grupo;
+import com.murillo.algafood.domain.model.Permissao;
 import com.murillo.algafood.domain.repository.GrupoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,9 @@ public class CadastroGrupoService {
 
     @Autowired
     private GrupoRepository grupoRepository;
+
+    @Autowired
+    private CadastroPermissaoService cadastroPermissao;
 
 
     public List<Grupo> listar() {
@@ -40,6 +44,7 @@ public class CadastroGrupoService {
     public void excluir(Long grupoId) {
 
         try {
+            buscarOuFalhar(grupoId);
             grupoRepository.deleteById(grupoId);
             grupoRepository.flush();
         } catch (EntidadeNaoEncontradaException e) {
@@ -53,5 +58,25 @@ public class CadastroGrupoService {
     public Grupo buscarOuFalhar(Long grupoId) {
         return grupoRepository.findById(grupoId).orElseThrow(() -> new GrupoNaoEncontradoException(grupoId));
     }
+
+
+    @Transactional
+    public void desassociarPermissao(Long grupoId, Long permissaoId) {
+
+        Grupo grupo = buscarOuFalhar(grupoId);
+        Permissao permissao = cadastroPermissao.buscarOuFalhar(permissaoId);
+        grupo.removerPermissao(permissao);
+
+    }
+
+    @Transactional
+    public void associarPermissao(Long grupoId, Long permissaoId) {
+
+        Grupo grupo = buscarOuFalhar(grupoId);
+        Permissao permissao = cadastroPermissao.buscarOuFalhar(permissaoId);
+        grupo.adicionarPermissao(permissao);
+
+    }
+
 
 }

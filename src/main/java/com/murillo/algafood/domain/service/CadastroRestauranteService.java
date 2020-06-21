@@ -3,10 +3,7 @@ package com.murillo.algafood.domain.service;
 
 import com.murillo.algafood.domain.exception.EntidadeEmUsoException;
 import com.murillo.algafood.domain.exception.RestauranteNaoEncontradoException;
-import com.murillo.algafood.domain.model.Cidade;
-import com.murillo.algafood.domain.model.Cozinha;
-import com.murillo.algafood.domain.model.FormaPagamento;
-import com.murillo.algafood.domain.model.Restaurante;
+import com.murillo.algafood.domain.model.*;
 import com.murillo.algafood.domain.repository.CozinhaRepository;
 import com.murillo.algafood.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,22 +19,23 @@ public class CadastroRestauranteService {
     private static final String MSG_RESTAURANTE_EM_USO = "Restaurante de código %d não pode ser removido pois está em uso";
 
     @Autowired
-    RestauranteRepository restauranteRepository;
+    private RestauranteRepository restauranteRepository;
 
     @Autowired
-    CadastroRestauranteService cadastroRestaurante;
+    private CadastroUsuarioService cadastroUsuario;
 
     @Autowired
-    CozinhaRepository cozinhaRepository;
+    private CozinhaRepository cozinhaRepository;
 
     @Autowired
-    CadastroCozinhaService cadastroCozinha;
+    private CadastroCozinhaService cadastroCozinha;
 
     @Autowired
-    CadastroCidadeService cadastroCidade;
+    private CadastroCidadeService cadastroCidade;
 
     @Autowired
-    CadastroFormaPagamentoService cadastroFormaPagamento;
+    private CadastroFormaPagamentoService cadastroFormaPagamento;
+
 
     @Transactional
     public Restaurante salvar(Restaurante restaurante) {
@@ -65,7 +63,7 @@ public class CadastroRestauranteService {
 
         Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
         restauranteAtual.ativar();
-        // Contexto JPA gerenciado não preciso fazer o update na table
+        // Contexto JPA gerenciado não preciso fazer o update na tabela
     }
 
     @Transactional
@@ -75,6 +73,17 @@ public class CadastroRestauranteService {
         restauranteAtual.inativar();
     }
 
+    @Transactional
+    public void fecharRestaurante(Long restauranteId) {
+        Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+        restauranteAtual.fechar();
+    }
+
+    @Transactional
+    public void abrirRestaurante(Long restauranteId) {
+        Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+        restauranteAtual.abrir();
+    }
 
     @Transactional
     public void excluir(Long restauranteId) {
@@ -105,6 +114,25 @@ public class CadastroRestauranteService {
         FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
         restaurante.adicionarFormaPagamento(formaPagamento);
 
+    }
+
+
+    @Transactional
+    public void adicionarResponsavel(Long restauranteId, Long usuarioId) {
+
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
+
+        restaurante.adicionarUsuarioResponsavel(usuario);
+    }
+
+    @Transactional
+    public void removerResponsavel(Long restauranteId, Long usuarioId) {
+
+        Restaurante restaurante = buscarOuFalhar(restauranteId);
+        Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
+
+        restaurante.removerUsuarioResponsavel(usuario);
     }
 
 }

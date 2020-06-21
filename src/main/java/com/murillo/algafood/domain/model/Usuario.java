@@ -47,4 +47,15 @@ public class Usuario {
     public boolean senhaNaoCoincideCom(String senha) {
         return !senhaCoincideCom(senha);
     }
+
+
+    public void adicionarGrupo(Grupo grupo) {
+        List<Grupo> grupos = getGrupos();
+        if (!grupos.contains(grupo)) grupos.add(grupo);
+    }
+
+    public void removerGrupo(Grupo grupo) {
+        List<Grupo> grupos = getGrupos();
+        grupos.remove(grupo);
+    }
 }

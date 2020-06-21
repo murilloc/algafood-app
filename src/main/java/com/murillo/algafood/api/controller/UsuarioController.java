@@ -1,5 +1,6 @@
 package com.murillo.algafood.api.controller;
 
+import com.murillo.algafood.api.assembler.GrupoInputModelAssembler;
 import com.murillo.algafood.api.assembler.UsuarioInputModelAssembler;
 import com.murillo.algafood.api.assembler.UsuarioInputModelDisassembler;
 import com.murillo.algafood.api.model.input.SenhaInputModel;
@@ -31,6 +32,9 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioInputModelDisassembler usuarioInputModelDisassembler;
+
+    @Autowired
+    private GrupoInputModelAssembler grupoInputModelAssembler;
 
 
     @GetMapping()
@@ -73,4 +77,5 @@ public class UsuarioController {
 
         cadastroUsuario.alterarSenha(usuarioId, senha.getSenhaAtual(), senha.getNovaSenha());
     }
+
 }

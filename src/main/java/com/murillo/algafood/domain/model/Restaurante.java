@@ -41,6 +41,8 @@ public class Restaurante {
 
     private Boolean ativo = Boolean.TRUE;
 
+    private Boolean aberto = Boolean.TRUE;
+
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
     private OffsetDateTime dataCadastro;
@@ -58,6 +60,12 @@ public class Restaurante {
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
     private Set<FormaPagamento> formasPagamento = new HashSet<>();
 
+    @ManyToMany //(fetch = FetchType.EAGER) // Raramente é necessário pois é muito oneroso para o desempenho
+    @JoinTable(name = "usuario_responsavel_restaurante",
+            joinColumns = @JoinColumn(name = "restaurante_id"),
+            inverseJoinColumns = @JoinColumn(name = "usuario_id"))
+    private Set<Usuario> usuarios = new HashSet<>();
+
 
     public void ativar() {
         setAtivo(true);
@@ -67,12 +75,28 @@ public class Restaurante {
         setAtivo(false);
     }
 
-    public boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {
-        return formasPagamento.add(formaPagamento);
+    public void abrir() {
+        setAberto(true);
     }
 
-    public boolean removerFormaPagamento(FormaPagamento formaPagamento) {
-        return formasPagamento.remove(formaPagamento);
+    public void fechar() {
+        setAberto(false);
+    }
+
+    public void adicionarFormaPagamento(FormaPagamento formaPagamento) {
+        formasPagamento.add(formaPagamento);
+    }
+
+    public void removerFormaPagamento(FormaPagamento formaPagamento) {
+        formasPagamento.remove(formaPagamento);
+    }
+
+    public void adicionarUsuarioResponsavel(Usuario usuario) {
+        usuarios.add(usuario);
+    }
+
+    public void removerUsuarioResponsavel(Usuario usuario) {
+        usuarios.remove(usuario);
     }
 
 }

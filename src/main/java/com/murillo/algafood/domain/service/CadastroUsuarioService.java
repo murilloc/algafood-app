@@ -2,6 +2,7 @@ package com.murillo.algafood.domain.service;
 
 import com.murillo.algafood.domain.exception.NegocioException;
 import com.murillo.algafood.domain.exception.UsuarioNaoEncontradoException;
+import com.murillo.algafood.domain.model.Grupo;
 import com.murillo.algafood.domain.model.Usuario;
 import com.murillo.algafood.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ public class CadastroUsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private CadastroGrupoService cadastroGrupo;
 
     public static final String MSG_USUARIO_EM_USO = "Usuário de código %d não pode ser removido, pois está em uso";
 
@@ -44,6 +48,24 @@ public class CadastroUsuarioService {
         }
 
         usuario.setSenha(novaSenha);
+    }
+
+    @Transactional
+    public void adicionarGrupo(Long usuarioId, Long grupoId) {
+
+        Usuario usuario = buscarOuFalhar(usuarioId);
+        Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
+        usuario.adicionarGrupo(grupo);
+
+    }
+
+    @Transactional
+    public void removerGrupo(Long usuarioId, Long grupoId) {
+
+        Usuario usuario = buscarOuFalhar(usuarioId);
+        Grupo grupo = cadastroGrupo.buscarOuFalhar(grupoId);
+        usuario.removerGrupo(grupo);
+
     }
 
 }
