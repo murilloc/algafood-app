@@ -17,7 +17,7 @@ public class GrupoInputModelDisassembler {
         return modelMapper.map(grupoInputModel, Grupo.class);
     }
 
-    public void copyToDomainObject(GrupoInputModel grupoInputModel, Grupo grupo) {
-        modelMapper.map(grupoInputModel, grupo);
+    public void copyToDomainObject(GrupoInputModel grupoInput, Grupo grupo) {
+        modelMapper.map(grupoInput, grupo);
     }
 }

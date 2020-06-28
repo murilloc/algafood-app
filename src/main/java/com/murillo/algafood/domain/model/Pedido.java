@@ -62,13 +62,16 @@ public class Pedido {
     @JoinColumn(name = "forma_pagamento_id", nullable = false)
     private FormaPagamento formaPagamento;
 
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<ItemPedido> itensPedido = new ArrayList<>();
 
 
     public void calculaValorTotal() {
+
+        getItensPedido().forEach(ItemPedido::calculaPrecoTotal);
+
         this.subtotal = getItensPedido().stream()
-                .map(item -> item.getPrecoTotal())
+                .map(ItemPedido::getPrecoTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         this.valorTotal = this.subtotal.add(this.taxaFrete);
