@@ -11,6 +11,7 @@ import com.murillo.algafood.core.validation.ValidacaoException;
 import com.murillo.algafood.domain.exception.CidadeNaoEncontradoException;
 import com.murillo.algafood.domain.exception.CozinhaNaoEncontradoException;
 import com.murillo.algafood.domain.exception.NegocioException;
+import com.murillo.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.murillo.algafood.domain.model.Restaurante;
 import com.murillo.algafood.domain.repository.RestauranteRepository;
 import com.murillo.algafood.domain.service.CadastroRestauranteService;
@@ -174,6 +175,30 @@ public class RestauranteController {
     public void inativar(@PathVariable Long restauranteId) {
 
         cadastroRestaurante.inativar(restauranteId);
+    }
+
+    @PutMapping("/ativacoes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void ativarMultiplos(@RequestBody  List<Long> restaurantesIds) {
+
+        try {
+            cadastroRestaurante.ativar(restaurantesIds);
+        } catch (RestauranteNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(), e);
+        }
+
+    }
+
+    @DeleteMapping("/ativacoes")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void inativarMultiplos(@RequestBody List<Long> restaurantesIds) {
+
+        try {
+            cadastroRestaurante.inativar(restaurantesIds);
+        } catch (RestauranteNaoEncontradoException e) {
+            throw new NegocioException(e.getMessage(),e);
+        }
+
     }
 
 

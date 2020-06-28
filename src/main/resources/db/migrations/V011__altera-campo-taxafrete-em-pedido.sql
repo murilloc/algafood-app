@@ -1,0 +1,1 @@
+alter table pedido change taxaFrete taxa_frete decimal(19,2) not null;

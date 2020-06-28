@@ -34,7 +34,7 @@ public class ItemPedido {
     private OffsetDateTime dataCriacao;
 
     @UpdateTimestamp
-    @Column(nullable = false, columnDefinition = "datetime")
+    @Column(columnDefinition = "datetime")
     private OffsetDateTime dataAtualizacao;
 
     @ManyToOne

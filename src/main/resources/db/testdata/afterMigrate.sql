@@ -12,6 +12,8 @@ truncate table restaurante_forma_pagamento;
 truncate table usuario;
 truncate table usuario_grupo;
 truncate table usuario_responsavel_restaurante;
+truncate table pedido;
+truncate table item_pedido;
 set foreign_key_checks = 1;
 
 
@@ -78,3 +80,25 @@ insert into usuario (id, nome, email, senha, data_cadastro) values
 insert into usuario_grupo(usuario_id, grupo_id) values (1,4),(1,5),(2,2),(4,1),(5,3),(6,5);
 
 insert into usuario_responsavel_restaurante(usuario_id, restaurante_id) values (7,1),(7,3),(6,1),(1,1);
+
+insert into pedido (id, restaurante_id, cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep,
+                    endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro,
+                    status_pedido, data_criacao, subtotal, taxa_frete, valor_total)
+values (1, 1, 1, 1, 1, '38400-000', 'Rua Floriano Peixoto', '500', 'Apto 801', 'Brasil',
+        'CRIADO', utc_timestamp, 298.90, 10, 308.90);
+
+insert into item_pedido (id, data_criacao, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (1,utc_timestamp, 1, 1, 1, 78.9, 78.9, null);
+
+insert into item_pedido (id,data_criacao, pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (2,utc_timestamp, 1, 2, 2, 110, 220, 'Menos picante, por favor');
+
+
+insert into pedido (id, restaurante_id, cliente_id, forma_pagamento_id, endereco_cidade_id, endereco_cep,
+                    endereco_logradouro, endereco_numero, endereco_complemento, endereco_bairro,
+                    status_pedido, data_criacao, subtotal, taxa_frete, valor_total)
+values (2, 4, 1, 2, 1, '38400-111', 'Rua Acre', '300', 'Casa 2', 'Centro',
+        'CRIADO', utc_timestamp, 79, 0, 79);
+
+insert into item_pedido (id, data_criacao,pedido_id, produto_id, quantidade, preco_unitario, preco_total, observacao)
+values (3,utc_timestamp, 2, 6, 1, 79, 79, 'Ao ponto');
