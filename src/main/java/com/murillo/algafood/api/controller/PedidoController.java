@@ -46,14 +46,14 @@ public class PedidoController {
         return pedidoResumoInputModelAssembler.toOutputModelCollection(pedidos);
     }
 
-    @GetMapping("/{pedidoId}")
-    public PedidoOutputModel buscar(@PathVariable Long pedidoId) {
-        Pedido pedido = cadastroPedido.buscarOuFalhar(pedidoId);
+    @GetMapping("/{codigo}")
+    public PedidoOutputModel buscar(@PathVariable String codigo) {
+        Pedido pedido = cadastroPedido.buscarOuFalhar(codigo);
 
         return pedidoInputModelAssembler.toOutputModel(pedido);
     }
 
-    @PutMapping()
+    @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public PedidoOutputModel emitirPedido(@Valid @RequestBody PedidoInputModel pedidoInput) {
 

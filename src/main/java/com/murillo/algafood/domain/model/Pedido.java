@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -21,6 +22,8 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String codigo;
 
     @Column(nullable = false)
     private BigDecimal subtotal;
@@ -107,13 +110,17 @@ public class Pedido {
 
         if (getStatusPedido().naoPodeTransitarPara(novoStatusPedido)) {
             throw new NegocioException(
-                    String.format("Status do pedido %d não pode ser alterado de %s para %s", getId(),
+                    String.format("Status do pedido de código %s não pode ser alterado de %s para %s", getCodigo(),
                             getStatusPedido().getDescricao(),
                             novoStatusPedido.getDescricao()));
         }
 
         this.statusPedido = novoStatusPedido;
+    }
 
+    @PrePersist
+    private void gerarCodigo() {
+        setCodigo(UUID.randomUUID().toString());
     }
 
 
