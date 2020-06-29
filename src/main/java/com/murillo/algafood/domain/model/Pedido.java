@@ -1,5 +1,6 @@
 package com.murillo.algafood.domain.model;
 
+import com.murillo.algafood.domain.exception.NegocioException;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -78,11 +79,42 @@ public class Pedido {
     }
 
     public void definirFrete() {
+
         setTaxaFrete(getRestaurante().getTaxaFrete());
     }
 
     public void associarPedidosAosItens() {
+
         getItensPedido().forEach(item -> item.setPedido(this));
     }
+
+    public void confirmar() {
+        setStatusPedido(StatusPedido.CONFIRMADO);
+        setDataConfirmacao(OffsetDateTime.now());
+    }
+
+    public void cancelar() {
+        setStatusPedido(StatusPedido.CANCELADO);
+        setDataCancelamento(OffsetDateTime.now());
+    }
+
+    public void entregar() {
+        setStatusPedido(StatusPedido.ENTREGUE);
+        setDataEntrega(OffsetDateTime.now());
+    }
+
+    private void setStatusPedido(StatusPedido novoStatusPedido) {
+
+        if (getStatusPedido().naoPodeTransitarPara(novoStatusPedido)) {
+            throw new NegocioException(
+                    String.format("Status do pedido %d não pode ser alterado de %s para %s", getId(),
+                            getStatusPedido().getDescricao(),
+                            novoStatusPedido.getDescricao()));
+        }
+
+        this.statusPedido = novoStatusPedido;
+
+    }
+
 
 }

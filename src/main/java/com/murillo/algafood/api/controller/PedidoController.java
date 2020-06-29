@@ -11,7 +11,7 @@ import com.murillo.algafood.domain.exception.NegocioException;
 import com.murillo.algafood.domain.model.Pedido;
 import com.murillo.algafood.domain.model.Usuario;
 import com.murillo.algafood.domain.repository.PedidoRepository;
-import com.murillo.algafood.domain.service.CadastroPedidoService;
+import com.murillo.algafood.domain.service.EmissaoPedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +30,7 @@ public class PedidoController {
     private PedidoInputModelAssembler pedidoInputModelAssembler;
 
     @Autowired
-    private CadastroPedidoService cadastroPedido;
+    private EmissaoPedidoService cadastroPedido;
 
     @Autowired
     private PedidoRepository pedidoRepository;
