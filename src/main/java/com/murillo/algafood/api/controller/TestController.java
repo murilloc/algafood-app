@@ -4,8 +4,8 @@ import com.murillo.algafood.domain.model.Cozinha;
 import com.murillo.algafood.domain.model.Restaurante;
 import com.murillo.algafood.domain.repository.CozinhaRepository;
 import com.murillo.algafood.domain.repository.RestauranteRepository;
-import com.murillo.algafood.infra.repository.spec.RestauranteComNomeSenhlhanteSpec;
-import com.murillo.algafood.infra.repository.spec.RestauranteFreteGratisSpec;
+import com.murillo.algafood.infra.repository.spec.RestauranteComNomeSenhlhanteSpecs;
+import com.murillo.algafood.infra.repository.spec.RestauranteFreteGratisSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,8 +63,8 @@ public class TestController {
 
     @GetMapping("/restaurantes/frete-gratis-por-nome")
     List<Restaurante> restaurantesComFreteGratisPorNome(String nome) {
-        var comFreteGratis = new RestauranteFreteGratisSpec();
-        var comNomeSemelhante = new RestauranteComNomeSenhlhanteSpec(nome);
+        var comFreteGratis = new RestauranteFreteGratisSpecs();
+        var comNomeSemelhante = new RestauranteComNomeSenhlhanteSpecs(nome);
 
         // É necessário configurar o repositorio para trabalhar com specifications
         return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));

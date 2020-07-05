@@ -1,5 +1,26 @@
+//    @GetMapping
+//    public MappingJacksonValue listar(@RequestParam(required = false) String projecao) {
+//        List<Restaurante> restaurantes = restauranteRepository.findAll();
+//        List<RestauranteOutputModel> restaurantesOutputModel = restauranteAssembler.toModelCollection(restaurantes);
+//
+//        MappingJacksonValue restaurantesWrapper = new MappingJacksonValue(restaurantesOutputModel);
+//
+//        if ("apenas-nome".equals(projecao)) {
+//            restaurantesWrapper.setSerializationView(RestauranteView.ApenasNome.class);
+//        } else if ("completo".equals(projecao)) {
+//            restaurantesWrapper.setSerializationView(null);
+//        } else {
+//
+//            restaurantesWrapper.setSerializationView(RestauranteView.Resumo.class);
+//        }
+//
+//        return restaurantesWrapper;
+//
+//    }
+
 package com.murillo.algafood.api.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.murillo.algafood.api.assembler.RestauranteInputModelAssembler;
@@ -7,6 +28,7 @@ import com.murillo.algafood.api.assembler.RestauranteInputModelDisassembler;
 import com.murillo.algafood.api.model.input.CozinhaIdInputModel;
 import com.murillo.algafood.api.model.input.RestauranteInput;
 import com.murillo.algafood.api.model.output.RestauranteOutputModel;
+import com.murillo.algafood.api.model.view.RestauranteView;
 import com.murillo.algafood.core.validation.ValidacaoException;
 import com.murillo.algafood.domain.exception.CidadeNaoEncontradoException;
 import com.murillo.algafood.domain.exception.CozinhaNaoEncontradoException;
@@ -48,11 +70,20 @@ public class RestauranteController {
     @Autowired
     private RestauranteInputModelDisassembler restauranteDisassembler;
 
+    @JsonView(RestauranteView.Resumo.class)
     @GetMapping()
     public List<RestauranteOutputModel> listar() {
 
         return restauranteAssembler.toModelCollection(restauranteRepository.findAll());
     }
+
+    @JsonView(RestauranteView.ApenasNome.class)
+    @GetMapping(params = "projecao=apenas-nome")
+    public List<RestauranteOutputModel> listarApenasNomes() {
+
+        return listar();
+    }
+
 
     @GetMapping(value = "/{restauranteId}")
     public RestauranteOutputModel buscar(@PathVariable("restauranteId") Long restauranteId) {
@@ -179,7 +210,7 @@ public class RestauranteController {
 
     @PutMapping("/ativacoes")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void ativarMultiplos(@RequestBody  List<Long> restaurantesIds) {
+    public void ativarMultiplos(@RequestBody List<Long> restaurantesIds) {
 
         try {
             cadastroRestaurante.ativar(restaurantesIds);
@@ -196,7 +227,7 @@ public class RestauranteController {
         try {
             cadastroRestaurante.inativar(restaurantesIds);
         } catch (RestauranteNaoEncontradoException e) {
-            throw new NegocioException(e.getMessage(),e);
+            throw new NegocioException(e.getMessage(), e);
         }
 
     }

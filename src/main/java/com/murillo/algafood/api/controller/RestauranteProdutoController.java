@@ -17,8 +17,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/restaurantes/{idRestaurante}/produtos")
-public class ProdutoController {
+@RequestMapping("/restaurantes/{restauranteId}/produtos")
+public class RestauranteProdutoController {
 
     @Autowired
     private ProdutoRepository produtoRepository;
@@ -37,19 +37,25 @@ public class ProdutoController {
 
 
     @GetMapping()
-    public List<ProdutoOutputModel> listar(@PathVariable Long idRestaurante) {
+    public List<ProdutoOutputModel> listar(@RequestParam(value = "incluir-inativos", required = false) boolean incluirInativos, @PathVariable Long restauranteId) {
 
-        cadastroRestaurante.buscarOuFalhar(idRestaurante);
-        List<Produto> produtos = produtoRepository.findByRestauranteId(idRestaurante);
+        Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
+        List<Produto> produtos;
+
+        if (incluirInativos) {
+            produtos = produtoRepository.findAllByRestaurante(restaurante);
+        } else {
+            produtos = produtoRepository.findAtivosByRestaurante(restaurante);
+        }
 
         return produtoInputModelAssembler.toOutputModelCollection(produtos);
     }
 
-    @GetMapping("/{idProduto}")
-    public ProdutoOutputModel buscar(@PathVariable Long idRestaurante, @PathVariable Long idProduto) {
+    @GetMapping("/{produtoId}")
+    public ProdutoOutputModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 
-        cadastroRestaurante.buscarOuFalhar(idRestaurante);
-        Produto produto = cadastroProduto.buscarOuFalhar(idProduto, idRestaurante);
+        cadastroRestaurante.buscarOuFalhar(restauranteId);
+        Produto produto = cadastroProduto.buscarOuFalhar(produtoId, restauranteId);
 
         return produtoInputModelAssembler.toOutputModel(produto);
     }
@@ -57,9 +63,9 @@ public class ProdutoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProdutoOutputModel salvar(@PathVariable Long idRestaurante, @RequestBody @Valid ProdutoInputModel produtoInput) {
+    public ProdutoOutputModel salvar(@PathVariable Long restauranteId, @RequestBody @Valid ProdutoInputModel produtoInput) {
 
-        Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(idRestaurante);
+        Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
         Produto novoProduto = produtoInputModelDisassembler.toDomainObject(produtoInput);
         novoProduto.setRestaurante(restaurante);
         novoProduto = cadastroProduto.salvar(novoProduto);
@@ -67,12 +73,12 @@ public class ProdutoController {
         return produtoInputModelAssembler.toOutputModel(novoProduto);
     }
 
-    @PutMapping("/{idProduto}")
-    public ProdutoOutputModel alterar(@PathVariable Long idRestaurante,
-                                      @PathVariable Long idProduto,
+    @PutMapping("/{produtoId}")
+    public ProdutoOutputModel alterar(@PathVariable Long restauranteId,
+                                      @PathVariable Long produtoId,
                                       @RequestBody @Valid ProdutoInputModel produtoInput) {
 
-        Produto produtoCadastrado = cadastroProduto.buscarOuFalhar(idProduto, idRestaurante);
+        Produto produtoCadastrado = cadastroProduto.buscarOuFalhar(produtoId, restauranteId);
         produtoInputModelDisassembler.copyToDomainObject(produtoInput, produtoCadastrado);
         produtoCadastrado = cadastroProduto.salvar(produtoCadastrado);
 
@@ -80,11 +86,11 @@ public class ProdutoController {
     }
 
 
-    @DeleteMapping("{idProduto}")
+    @DeleteMapping("{produtoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletar(@PathVariable Long idRestaurante, @PathVariable Long idProduto) {
+    public void deletar(@PathVariable Long restauranteId, @PathVariable Long produtoId) {
 
-        cadastroProduto.excluir(idProduto, idRestaurante);
+        cadastroProduto.excluir(produtoId, restauranteId);
 
     }
 }

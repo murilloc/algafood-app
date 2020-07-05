@@ -5,7 +5,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;
 
-public class RestauranteSpec {
+public class RestauranteSpecs {
 
     public static Specification<Restaurante> comFreteGratis() {
 

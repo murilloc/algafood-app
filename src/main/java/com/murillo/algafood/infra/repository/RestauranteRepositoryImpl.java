@@ -4,7 +4,7 @@ package com.murillo.algafood.infra.repository;
 import com.murillo.algafood.domain.model.Restaurante;
 import com.murillo.algafood.domain.repository.CustomRestauranteRepository;
 import com.murillo.algafood.domain.repository.RestauranteRepository;
-import com.murillo.algafood.infra.repository.spec.RestauranteSpec;
+import com.murillo.algafood.infra.repository.spec.RestauranteSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -97,7 +97,7 @@ public class RestauranteRepositoryImpl implements CustomRestauranteRepository {
 
     @Override
     public List<Restaurante> findComFreteGratis(String nome) {
-        return restauranteRepository.findAll(RestauranteSpec.comFreteGratis().and(RestauranteSpec.comNomeSemelhante(nome)));
+        return restauranteRepository.findAll(RestauranteSpecs.comFreteGratis().and(RestauranteSpecs.comNomeSemelhante(nome)));
     }
 
 

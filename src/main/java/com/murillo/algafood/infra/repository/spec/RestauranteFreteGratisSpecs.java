@@ -10,7 +10,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
 
-public class RestauranteFreteGratisSpec implements Specification<Restaurante> {
+public class RestauranteFreteGratisSpecs implements Specification<Restaurante> {
 
     private static final long serialVersionUID = 1L;
 

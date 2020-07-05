@@ -9,11 +9,11 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 
-public class RestauranteComNomeSenhlhanteSpec implements Specification<Restaurante> {
+public class RestauranteComNomeSenhlhanteSpecs implements Specification<Restaurante> {
 
     private String nome;
 
-    public RestauranteComNomeSenhlhanteSpec(String nome) {
+    public RestauranteComNomeSenhlhanteSpecs(String nome) {
         this.nome = nome;
     }
 
