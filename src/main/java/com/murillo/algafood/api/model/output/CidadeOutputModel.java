@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 public class CidadeOutputModel {
 
-
     private Long id;
     private String nome;
     private EstadoOutputModel estado;

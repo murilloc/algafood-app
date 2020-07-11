@@ -14,8 +14,11 @@ public class PedidoSpecs {
 
         return (root, query, builder) -> {
 
-            root.fetch("restaurante").fetch("cozinha");
-            root.fetch("cliente");
+
+            if (Pedido.class.equals(query.getResultType())) {
+                root.fetch("restaurante").fetch("cozinha");
+                root.fetch("cliente");
+            }
 
             var predicates = new ArrayList<Predicate>();
 
@@ -42,6 +45,5 @@ public class PedidoSpecs {
     public static Specification<Restaurante> comNomeSemelhante(String nome) {
         return (root, query, builder) -> builder.like(root.get("nome"), "%" + nome + "%");
     }
-
 
 }

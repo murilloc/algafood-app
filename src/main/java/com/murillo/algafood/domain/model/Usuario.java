@@ -23,8 +23,8 @@ public class Usuario {
     @NotBlank
     private String nome;
 
-    @Email
-    @NotBlank
+   @Email
+   @NotBlank
     private String email;
 
     private String senha;
