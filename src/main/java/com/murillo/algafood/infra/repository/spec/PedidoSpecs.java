@@ -2,7 +2,7 @@ package com.murillo.algafood.infra.repository.spec;
 
 import com.murillo.algafood.domain.model.Pedido;
 import com.murillo.algafood.domain.model.Restaurante;
-import com.murillo.algafood.domain.repository.filter.PedidoFilter;
+import com.murillo.algafood.domain.filter.PedidoFilter;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;

@@ -19,7 +19,8 @@ public class PedidoResumoOutputModel {
     private StatusPedido statusPedido;
     private OffsetDateTime dataCriacao;
     private RestauranteResumoOutputModel restaurante;
-    private UsuarioOutputModel cliente;
+    //private UsuarioOutputModel cliente;
+    private String nomeCliente;
 
 
 }

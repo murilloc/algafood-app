@@ -1,7 +1,7 @@
 package com.murillo.algafood.api.assembler;
 
 
-import com.murillo.algafood.api.model.input.RestauranteInput;
+import com.murillo.algafood.api.model.input.RestauranteInputModel;
 import com.murillo.algafood.domain.model.Cidade;
 import com.murillo.algafood.domain.model.Cozinha;
 import com.murillo.algafood.domain.model.Restaurante;
@@ -17,13 +17,13 @@ public class RestauranteInputModelDisassembler {
     ModelMapper modelMapper;
 
 
-    public Restaurante fromInputModel(RestauranteInput restauranteInput) {
+    public Restaurante fromInputModel(RestauranteInputModel restauranteInput) {
 
         return modelMapper.map(restauranteInput, Restaurante.class);
 
     }
 
-    public void copyToDomainObject(RestauranteInput restauranteInput, Restaurante restaurante){
+    public void copyToDomainObject(RestauranteInputModel restauranteInput, Restaurante restaurante){
 
         // Para evitar a exception
         // org.hibernate.HibernateException: identifier of an instance of com.murillo.algafood.domain.model.Cozinha was altered from 1 to 3

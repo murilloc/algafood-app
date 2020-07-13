@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.murillo.algafood.api.assembler.RestauranteInputModelAssembler;
 import com.murillo.algafood.api.assembler.RestauranteInputModelDisassembler;
 import com.murillo.algafood.api.model.input.CozinhaIdInputModel;
-import com.murillo.algafood.api.model.input.RestauranteInput;
+import com.murillo.algafood.api.model.input.RestauranteInputModel;
 import com.murillo.algafood.api.model.output.RestauranteOutputModel;
 import com.murillo.algafood.api.model.view.RestauranteView;
 import com.murillo.algafood.core.validation.ValidacaoException;
@@ -96,7 +96,7 @@ public class RestauranteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RestauranteOutputModel adicionar(@RequestBody @Valid/* @Validated(Groups.CadastroRestaurante.class)*/ RestauranteInput restauranteInput) {
+    public RestauranteOutputModel adicionar(@RequestBody @Valid/* @Validated(Groups.CadastroRestaurante.class)*/ RestauranteInputModel restauranteInput) {
 
         try {
             return restauranteAssembler.toOutputModel(cadastroRestaurante.salvar(restauranteDisassembler.fromInputModel(restauranteInput)));
@@ -115,7 +115,7 @@ public class RestauranteController {
         merge(campos, restauranteAtual, request);
         validate(restauranteAtual, "restaurante");
 
-        RestauranteInput restauranteInput = new RestauranteInput();
+        RestauranteInputModel restauranteInput = new RestauranteInputModel();
         CozinhaIdInputModel cozinhaIdInputModel = new CozinhaIdInputModel();
         cozinhaIdInputModel.setId(restauranteAtual.getCozinha().getId());
 
@@ -162,7 +162,7 @@ public class RestauranteController {
     }
 
     @PutMapping("/{restauranteId}")
-    public RestauranteOutputModel atualizar(@RequestBody @Valid RestauranteInput restauranteInput, @PathVariable("restauranteId") Long restauranteId) {
+    public RestauranteOutputModel atualizar(@RequestBody @Valid RestauranteInputModel restauranteInput, @PathVariable("restauranteId") Long restauranteId) {
 
         try {
 //            Restaurante restaurante = restauranteDisassembler.fromInputModel(restauranteInput);

@@ -1,4 +1,4 @@
-package com.murillo.algafood.domain.repository.filter;
+package com.murillo.algafood.domain.filter;
 
 import lombok.Getter;
 import lombok.Setter;
