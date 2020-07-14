@@ -1,4 +1,4 @@
-package com.murillo.algafood.infra.repository;
+package com.murillo.algafood.infra.repository.repository;
 
 
 import com.murillo.algafood.domain.model.Restaurante;
