@@ -14,6 +14,7 @@ truncate table usuario_grupo;
 truncate table usuario_responsavel_restaurante;
 truncate table pedido;
 truncate table item_pedido;
+truncate table foto_produto;
 set foreign_key_checks = 1;
 
 
