@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 
 @Component
-public class FotoProdutoInputAssembler {
+public class FotoProdutoInputModelAssembler {
 
 
     @Autowired

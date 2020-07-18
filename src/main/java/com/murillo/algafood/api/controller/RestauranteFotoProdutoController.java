@@ -1,7 +1,7 @@
 package com.murillo.algafood.api.controller;
 
 
-import com.murillo.algafood.api.assembler.FotoProdutoInputAssembler;
+import com.murillo.algafood.api.assembler.FotoProdutoInputModelAssembler;
 import com.murillo.algafood.api.model.input.FotoProdutoInputModel;
 import com.murillo.algafood.api.model.output.FotoProdutoOutputModel;
 import com.murillo.algafood.domain.model.FotoProduto;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/restaurantes/{restauranteId}/produtos/{produtoId}/foto")
@@ -28,11 +29,13 @@ public class RestauranteFotoProdutoController {
     @Autowired
     private CadastroProdutoService cadastroProduto;
     @Autowired
-    private FotoProdutoInputAssembler fotoProdutoInputAssembler;
+    private FotoProdutoInputModelAssembler fotoProdutoInputModelAssembler;
 
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public FotoProdutoOutputModel atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId, @Valid FotoProdutoInputModel fotoProdutoInput) {
+    public FotoProdutoOutputModel atualizarFoto(@PathVariable Long restauranteId,
+                                                @PathVariable Long produtoId,
+                                                @Valid FotoProdutoInputModel fotoProdutoInput) throws IOException {
 
         Produto produto = cadastroProduto.buscarOuFalhar(produtoId, restauranteId);
         MultipartFile arquivo = fotoProdutoInput.getArquivo();
@@ -44,8 +47,8 @@ public class RestauranteFotoProdutoController {
         foto.setTamanho(arquivo.getSize());
         foto.setNomeArquivo(arquivo.getOriginalFilename());
 
-        FotoProduto fotoProduto = catalogoFotoProduto.salvar(foto);
-        return fotoProdutoInputAssembler.toOutputModel(fotoProduto);
+        FotoProduto fotoProduto = catalogoFotoProduto.salvar(foto, arquivo.getInputStream());
+        return fotoProdutoInputModelAssembler.toOutputModel(fotoProduto);
     }
 
 
