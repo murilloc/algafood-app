@@ -1,5 +1,6 @@
 package com.murillo.algafood.domain.service;
 
+import com.murillo.algafood.domain.exception.FotoProdutoNaoEncontradaException;
 import com.murillo.algafood.domain.model.FotoProduto;
 import com.murillo.algafood.domain.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,11 @@ public class CatalogoFotoProdutoService {
 
     @Autowired
     private FotoStorageService fotoStorage;
+
+    public FotoProduto buscarOuFalhar(Long restauranteId, Long produtoId) {
+        return produtoRepository.findFotoById(restauranteId, produtoId)
+                .orElseThrow(() -> new FotoProdutoNaoEncontradaException(restauranteId, produtoId));
+    }
 
     @Transactional
     public FotoProduto salvar(FotoProduto foto, InputStream dadosArquivo) {
@@ -45,6 +51,18 @@ public class CatalogoFotoProdutoService {
         fotoStorage.substituir(nomeArquivoExistente, novaFoto);
 
         return foto;
+    }
+
+    @Transactional
+    public void excluir(Long restauranteId, Long produtoId) {
+
+        FotoProduto foto = buscarOuFalhar(restauranteId, produtoId);
+
+        produtoRepository.delete(foto);
+        produtoRepository.flush();
+
+        fotoStorage.remover(foto.getNomeArquivo());
+
     }
 
 }
