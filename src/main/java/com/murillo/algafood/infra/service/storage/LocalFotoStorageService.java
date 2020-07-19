@@ -1,8 +1,8 @@
-package com.murillo.algafood.infra.repository.service.storage;
+package com.murillo.algafood.infra.service.storage;
 
+import com.murillo.algafood.core.storage.StorageProperties;
 import com.murillo.algafood.domain.service.FotoStorageService;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.IOException;
@@ -10,11 +10,11 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@Service
+//@Service
 public class LocalFotoStorageService implements FotoStorageService {
 
-    @Value("${algafood.local.storage.diretorio-fotos}")
-    private Path diretorioFotos;
+    @Autowired
+    private StorageProperties storageProperties;
 
     @Override
     public InputStream recuperar(String nomeArquivo) {
@@ -56,7 +56,7 @@ public class LocalFotoStorageService implements FotoStorageService {
 
     private Path getArquivoPath(String nomeArquivo) {
 
-        return diretorioFotos.resolve(Path.of(nomeArquivo));
+        return storageProperties.getLocal().getDiretorioFotos().resolve(Path.of(nomeArquivo));
 
     }
 

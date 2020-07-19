@@ -1,10 +1,10 @@
-package com.murillo.algafood.infra.repository.repository;
+package com.murillo.algafood.infra.repository;
 
 
 import com.murillo.algafood.domain.model.Restaurante;
 import com.murillo.algafood.domain.repository.CustomRestauranteRepository;
 import com.murillo.algafood.domain.repository.RestauranteRepository;
-import com.murillo.algafood.infra.repository.spec.RestauranteSpecs;
+import com.murillo.algafood.infra.spec.RestauranteSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;

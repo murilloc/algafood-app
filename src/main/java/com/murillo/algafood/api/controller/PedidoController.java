@@ -15,7 +15,7 @@ import com.murillo.algafood.domain.model.Usuario;
 import com.murillo.algafood.domain.repository.PedidoRepository;
 import com.murillo.algafood.domain.filter.PedidoFilter;
 import com.murillo.algafood.domain.service.EmissaoPedidoService;
-import com.murillo.algafood.infra.repository.spec.PedidoSpecs;
+import com.murillo.algafood.infra.spec.PedidoSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

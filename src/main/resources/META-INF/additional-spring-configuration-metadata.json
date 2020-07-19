@@ -1,0 +1,23 @@
+{
+  "properties": [
+    {
+      "name": "algafood.storage.local.diretorio-fotos",
+      "type": "java.lang.String",
+      "description": "Description for algafood.storage.local.diretorio-fotos."
+    },
+    {
+      "name": "algafood.storage.s3.regiao",
+      "type": "java.lang.String",
+      "description": "Description for algafood.storage.s3.regiao."
+    },
+    {
+      "name": "algafood.storage.s3.bucket",
+      "type": "java.lang.String",
+      "description": "Description for algafood.storage.s3.bucket."
+    },
+    {
+      "name": "algafood.storage.s3.diretorio-fotos",
+      "type": "java.lang.String",
+      "description": "Description for algafood.storage.s3.diretorio-fotos."
+    }
+  ] }

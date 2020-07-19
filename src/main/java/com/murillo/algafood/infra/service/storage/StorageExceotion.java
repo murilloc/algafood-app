@@ -1,4 +1,4 @@
-package com.murillo.algafood.infra.repository.service.storage;
+package com.murillo.algafood.infra.service.storage;
 
 public class StorageExceotion extends RuntimeException {
 

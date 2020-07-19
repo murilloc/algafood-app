@@ -1,4 +1,4 @@
-package com.murillo.algafood.infra.repository.repository;
+package com.murillo.algafood.infra.repository;
 
 import com.murillo.algafood.domain.model.FotoProduto;
 import com.murillo.algafood.domain.repository.ProdutoRepositoryQueries;

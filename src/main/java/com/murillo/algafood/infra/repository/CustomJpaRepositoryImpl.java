@@ -1,4 +1,4 @@
-package com.murillo.algafood.infra.repository.repository;
+package com.murillo.algafood.infra.repository;
 
 import com.murillo.algafood.domain.repository.CustomJpaRepository;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;

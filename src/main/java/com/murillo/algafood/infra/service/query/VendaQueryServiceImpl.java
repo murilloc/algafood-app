@@ -1,4 +1,4 @@
-package com.murillo.algafood.infra.repository.service.query;
+package com.murillo.algafood.infra.service.query;
 
 import com.murillo.algafood.domain.filter.VendaDiariaFilter;
 import com.murillo.algafood.domain.model.Pedido;

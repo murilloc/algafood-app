@@ -1,4 +1,4 @@
-package com.murillo.algafood.infra.repository.service.report;
+package com.murillo.algafood.infra.service.report;
 
 public class ReportException  extends RuntimeException{
 
