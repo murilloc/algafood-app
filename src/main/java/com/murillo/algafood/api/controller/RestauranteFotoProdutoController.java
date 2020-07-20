@@ -10,6 +10,7 @@ import com.murillo.algafood.domain.model.Produto;
 import com.murillo.algafood.domain.service.CadastroProdutoService;
 import com.murillo.algafood.domain.service.CatalogoFotoProdutoService;
 import com.murillo.algafood.domain.service.FotoStorageService;
+import org.apache.http.HttpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -78,9 +78,9 @@ public class RestauranteFotoProdutoController {
     }
 
     @GetMapping
-    public ResponseEntity<InputStreamResource> servirFoto(@PathVariable Long restauranteId,
-                                                          @PathVariable Long produtoId,
-                                                          @RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
+    public ResponseEntity<?> servirFoto(@PathVariable Long restauranteId,
+                                        @PathVariable Long produtoId,
+                                        @RequestHeader(name = "accept") String acceptHeader) throws HttpMediaTypeNotAcceptableException {
 
         try {
             FotoProduto foto = catalogoFotoProduto.buscarOuFalhar(restauranteId, produtoId);
@@ -88,10 +88,19 @@ public class RestauranteFotoProdutoController {
             List<MediaType> mediaTypesAceitas = MediaType.parseMediaTypes(acceptHeader);
             verificarCompatibilidadeMediaType(mediaTypeFoto, mediaTypesAceitas);
 
-            InputStream inputstream = fotoStorage.recuperar(foto.getNomeArquivo());
-            return ResponseEntity.ok()
-                    .contentType(mediaTypeFoto)
-                    .body(new InputStreamResource(inputstream));
+            FotoStorageService.FotoRecuperada fotoRecuperada = fotoStorage.recuperar(foto.getNomeArquivo());
+
+            if (fotoRecuperada.temUrl()) {
+
+                return ResponseEntity.status(HttpStatus.FOUND)
+                        .header(HttpHeaders.LOCATION, fotoRecuperada.getUrl()).build();
+
+            } else {
+
+                return ResponseEntity.ok()
+                        .contentType(mediaTypeFoto)
+                        .body(new InputStreamResource(fotoRecuperada.getInputStream()));
+            }
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.notFound().build();
         }
