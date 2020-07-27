@@ -70,13 +70,13 @@ insert into grupo (nome) values('Gerente'), ('Vendedor'), ('Secretária'), ('Cad
 insert into grupo_permissao(grupo_id, permissao_id) values (1,1),(1,2),(1,3),(1,4),(2,2),(2,3),(3,3),(3,6),(4,4),(4,5),(5,1),(5,3),(5,7);
 
 insert into usuario (id, nome, email, senha, data_cadastro) values
-(1, 'João da Silva', 'joao.ger@algafood.com', '123', utc_timestamp),
-(2, 'Maria Joaquina', 'maria.vnd@algafood.com', '123', utc_timestamp),
-(3, 'José Souza', 'jose.aux@algafood.com', '123', utc_timestamp),
-(4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '123', utc_timestamp),
-(5, 'Maria Nogueira', 'maria.nogueira@algafood.com', '123', utc_timestamp),
-(6, 'Veronica Pereira Nogueira', 'veronica.martins@algafood.com', '123', utc_timestamp),
-(7, 'Murillo Nogueira', 'murillo.nogueira@algafood.com', '123', utc_timestamp);
+(1, 'João da Silva', 'murillo.developer+joao.ger@gmail.com', '123', utc_timestamp),
+(2, 'Maria Joaquina', 'murillo.developer+maria.vnd@gmail.com', '123', utc_timestamp),
+(3, 'José Souza', 'murillo.developer+jose.aux@gmail.com', '123', utc_timestamp),
+(4, 'Sebastião Martins', 'murillo.developer+sebastiao.cad@gmail.com', '123', utc_timestamp),
+(5, 'Maria Nogueira', 'murillo.developer+maria.nogueira@gmail.com', '123', utc_timestamp),
+(6, 'Veronica Pereira Nogueira', 'murillo.developer+veronica.nogueira@gmail.com', '123', utc_timestamp),
+(7, 'Murillo Nogueira', 'murillo.developer+murillo.nogueira@gmail.com', '123', utc_timestamp);
 
 insert into usuario_grupo(usuario_id, grupo_id) values (1,4),(1,5),(2,2),(4,1),(5,3),(6,5);
 

@@ -11,12 +11,24 @@ public class FluxoPedidoService {
     @Autowired
     private EmissaoPedidoService emissaoPedidoService;
 
+    @Autowired
+    private EnvioEmailService envioEmailService;
+
 
     @Transactional
     public void confirmar(String codigo) {
 
         Pedido pedido = emissaoPedidoService.buscarOuFalhar(codigo);
         pedido.confirmar();
+
+        var mensagem = EnvioEmailService.Mensagem.builder()
+                .assunto(pedido.getRestaurante().getNome() + " - " + "Pedido confirmado")
+                .corpo("pedido-confirmado.ftl")
+                .variavel("pedido", pedido)
+                .destinatario(pedido.getCliente().getEmail())
+                .build();
+
+        envioEmailService.enviar(mensagem);
     }
 
     @Transactional
