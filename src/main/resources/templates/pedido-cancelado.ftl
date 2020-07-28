@@ -1,10 +1,10 @@
 <html>
 <head>
-    <title>Confirmação de Pedido</title>
+    <title>Cancelamento de Pedido</title>
 </head>
 <body style="font: 14px Arial, Helvetica, sans-serif">
-<h1 style="color: red; font-size: 26px">Pedido Confirmado</h1>
-<p>${pedido.cliente.nome}, seu pedido foi confirmado pelo restaurante e ja está sendo reprarado.</p>
+<h1 style="color: red; font-size: 26px">Pedido Cancelado</h1>
+<p>${pedido.cliente.nome}, seu pedido foi cancelado.</p>
 
 <h2 style="font-size: 20px">${pedido.restaurante.nome}</h2>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 400px; color: #6f6f6f">

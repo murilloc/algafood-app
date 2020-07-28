@@ -1,6 +1,7 @@
 package com.murillo.algafood.domain.service;
 
 import com.murillo.algafood.domain.model.Pedido;
+import com.murillo.algafood.domain.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,25 +11,15 @@ import javax.transaction.Transactional;
 public class FluxoPedidoService {
     @Autowired
     private EmissaoPedidoService emissaoPedidoService;
-
     @Autowired
-    private EnvioEmailService envioEmailService;
-
+    private PedidoRepository pedidoRepository;
 
     @Transactional
     public void confirmar(String codigo) {
 
         Pedido pedido = emissaoPedidoService.buscarOuFalhar(codigo);
         pedido.confirmar();
-
-        var mensagem = EnvioEmailService.Mensagem.builder()
-                .assunto(pedido.getRestaurante().getNome() + " - " + "Pedido confirmado")
-                .corpo("pedido-confirmado.ftl")
-                .variavel("pedido", pedido)
-                .destinatario(pedido.getCliente().getEmail())
-                .build();
-
-        envioEmailService.enviar(mensagem);
+        pedidoRepository.save(pedido); // para disparar o evento
     }
 
     @Transactional
@@ -36,6 +27,7 @@ public class FluxoPedidoService {
 
         Pedido pedido = emissaoPedidoService.buscarOuFalhar(codigo);
         pedido.cancelar();
+        pedidoRepository.save(pedido);
     }
 
     @Transactional
