@@ -16,6 +16,7 @@ public class CidadeInputModelAssembler {
     private ModelMapper modelMapper;
 
     public CidadeOutputModel toOutputModel(Cidade cidade) {
+
         return modelMapper.map(cidade, CidadeOutputModel.class);
     }
 

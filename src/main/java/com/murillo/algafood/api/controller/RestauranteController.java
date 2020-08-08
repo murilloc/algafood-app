@@ -52,7 +52,6 @@ import javax.validation.Valid;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-
 @RestController
 @RequestMapping("/restaurantes")
 public class RestauranteController {
@@ -83,6 +82,7 @@ public class RestauranteController {
 
         return listar();
     }
+
 
 
     @GetMapping(value = "/{restauranteId}")
