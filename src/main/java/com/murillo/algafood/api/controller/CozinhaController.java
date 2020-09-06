@@ -4,23 +4,27 @@ import com.murillo.algafood.api.assembler.CozinhaInputModelAssembler;
 import com.murillo.algafood.api.assembler.CozinhaInputModelDisassembler;
 import com.murillo.algafood.api.model.input.CozinhaInputModel;
 import com.murillo.algafood.api.model.output.CozinhaOutputModel;
+import com.murillo.algafood.api.openapi.controller.CozinhaControllerOpenApi;
 import com.murillo.algafood.domain.model.Cozinha;
 import com.murillo.algafood.domain.repository.CozinhaRepository;
 import com.murillo.algafood.domain.service.CadastroCozinhaService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/cozinhas")
-public class CozinhaController {
+@RequestMapping(value = "/cozinhas", produces = MediaType.APPLICATION_JSON_VALUE)
+public class CozinhaController implements CozinhaControllerOpenApi {
 
     @Autowired
     private CozinhaRepository cozinhaRepository;
@@ -35,16 +39,22 @@ public class CozinhaController {
 
 
     @GetMapping
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula", name = "campos", paramType = "string")
+    })
     public Page<CozinhaOutputModel> listar(@PageableDefault(size = 5) Pageable pageable) {
 
         Page<Cozinha> cozinhasPage = cozinhaRepository.findAll(pageable);
-        List<CozinhaOutputModel> cozinhasModel =  cozinhaInputModelAssembler
+        List<CozinhaOutputModel> cozinhasModel = cozinhaInputModelAssembler
                 .toOutputModelCollection(cozinhasPage.getContent());
 
-        Page<CozinhaOutputModel> cozinhasOutputModelPage = new PageImpl<>(cozinhasModel,pageable, cozinhasPage.getTotalElements());
+        Page<CozinhaOutputModel> cozinhasOutputModelPage = new PageImpl<>(cozinhasModel, pageable, cozinhasPage.getTotalElements());
         return cozinhasOutputModelPage;
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula", name = "campos", paramType = "string")
+    })
     @GetMapping("/{cozinhaId}")
     public CozinhaOutputModel buscar(@PathVariable Long cozinhaId) {
 
@@ -60,7 +70,7 @@ public class CozinhaController {
 
         Cozinha novaCozinha = cozinhaInputModelDisassembler.toDomainObject(cozinhaInput);
         novaCozinha = cadastroCozinha.salvar(novaCozinha);
-        CozinhaOutputModel cozinhaOutputModel =cozinhaInputModelAssembler.toOutputModel(novaCozinha);
+        CozinhaOutputModel cozinhaOutputModel = cozinhaInputModelAssembler.toOutputModel(novaCozinha);
         return cozinhaOutputModel;
     }
 

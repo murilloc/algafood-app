@@ -16,6 +16,8 @@ import com.murillo.algafood.domain.repository.PedidoRepository;
 import com.murillo.algafood.domain.filter.PedidoFilter;
 import com.murillo.algafood.domain.service.EmissaoPedidoService;
 import com.murillo.algafood.infra.spec.PedidoSpecs;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -47,6 +49,9 @@ public class PedidoController {
     private PedidoInputModelDisassembler pedidoInputModelDisassembler;
 
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula", name = "campos", paramType = "string")
+    })
     @GetMapping
     public Page<PedidoResumoOutputModel> pesquisar(@PageableDefault PedidoFilter filtro, Pageable pageable) {
 
@@ -96,6 +101,9 @@ public class PedidoController {
 //
 //    }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula", name = "campos", paramType = "string")
+    })
     @GetMapping("/{codigo}")
     public PedidoOutputModel buscar(@PathVariable String codigo) {
         Pedido pedido = cadastroPedido.buscarOuFalhar(codigo);

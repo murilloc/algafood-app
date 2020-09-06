@@ -2,8 +2,7 @@ package com.murillo.algafood.api.controller;
 
 import com.murillo.algafood.api.assembler.CidadeInputModelAssembler;
 import com.murillo.algafood.api.assembler.CidadeInputModelDisassembler;
-import com.murillo.algafood.api.controller.openapi.CidadeControllerOpenApi;
-import com.murillo.algafood.api.exceptionhandler.Problem;
+import com.murillo.algafood.api.openapi.controller.CidadeControllerOpenApi;
 import com.murillo.algafood.api.model.input.CidadeInputModel;
 import com.murillo.algafood.api.model.output.CidadeOutputModel;
 import com.murillo.algafood.domain.exception.EstadoNaoEncontradoException;
@@ -11,7 +10,6 @@ import com.murillo.algafood.domain.exception.NegocioException;
 import com.murillo.algafood.domain.model.Cidade;
 import com.murillo.algafood.domain.repository.CidadeRepository;
 import com.murillo.algafood.domain.service.CadastroCidadeService;
-import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

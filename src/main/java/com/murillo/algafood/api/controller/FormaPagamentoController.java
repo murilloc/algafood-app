@@ -4,12 +4,14 @@ import com.murillo.algafood.api.assembler.FormaPagamentoInputModelAssembler;
 import com.murillo.algafood.api.assembler.FormaPagamentoInputModelDisassembler;
 import com.murillo.algafood.api.model.input.FormaPagamentoInputModel;
 import com.murillo.algafood.api.model.output.FormaPagamentoOutputModel;
+import com.murillo.algafood.api.openapi.controller.FormaPagamentoOpenApi;
 import com.murillo.algafood.domain.model.FormaPagamento;
 import com.murillo.algafood.domain.repository.FormaPagamentoRepository;
 import com.murillo.algafood.domain.service.CadastroFormaPagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -21,8 +23,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping(value = "/formas-pagamento")
-public class FormaPagamentoController {
+@RequestMapping(value = "/formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
+public class FormaPagamentoController implements FormaPagamentoOpenApi {
 
     @Autowired
     private CadastroFormaPagamentoService cadastroFormaPagamento;
@@ -45,7 +47,7 @@ public class FormaPagamentoController {
             eTag = String.valueOf(dataUltimaAtualizacao.toEpochSecond());
         }
 
-        if(request.checkNotModified(eTag)){
+        if (request.checkNotModified(eTag)) {
             return null;
         }
 
@@ -77,7 +79,7 @@ public class FormaPagamentoController {
             eTag = String.valueOf(dataUltimaAtualizacao.toEpochSecond());
         }
 
-        if(request.checkNotModified(eTag)){
+        if (request.checkNotModified(eTag)) {
             return null;
         }
 
